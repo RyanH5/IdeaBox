@@ -106,17 +106,21 @@ function downvoteIdea() {
   changeStorageQuality(this)
 }
 
+function getParseStringSet(selector) {
+  var id = $(this).closest('.idea-cards').attr('id');
+  var idea = localStorage.getItem(id);
+  idea = JSON.parse(idea);
+  idea.selector = $(this).text();
+  var stringifiedIdea = JSON.stringify(idea)
+  localStorage.setItem(id, stringifiedIdea);
+}
+
 function persistTitle(e) {
   if (e.keyCode === 13) {
     e.preventDefault();
     $inputTitle.focus();
   }
-  var id = $(this).closest('.idea-cards').attr('id');
-  var idea = localStorage.getItem(id);
-  idea = JSON.parse(idea);
-  idea.title = $(this).text();
-  var stringifiedIdea = JSON.stringify(idea)
-  localStorage.setItem(id, stringifiedIdea);
+  getParseStringSet();
 }
 
 function persistBody(e) {
@@ -124,24 +128,17 @@ function persistBody(e) {
   e.preventDefault();
   $inputTitle.focus();
   }
-  var id = $(this).closest('.idea-cards').attr('id');
-  var idea = localStorage.getItem(id);
-  idea = JSON.parse(idea);
-  idea.body = $(this).text();
-  var stringifiedIdea = JSON.stringify(idea)
-  localStorage.setItem(id, stringifiedIdea);
+  getParseStringSet();
 }
 
 function searchIdeas() {
-   $('.idea-cards').hide();
+  $('.idea-cards').hide();
   search('.quality');
   search('.idea-body');
   search('.idea-title');
-
 }
 
 function search(selector) {
-  console.log(selector)
   var $input = $('.section__search-field').val();
   $input = $input.toUpperCase();
   var array = $(selector);
